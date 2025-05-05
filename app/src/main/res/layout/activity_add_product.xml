@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del producto" />
+
+    <EditText
+        android:id="@+id/editTextFechaCaducidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de caducidad (AAAA-MM-DD)"
+        android:focusable="false"
+        android:clickable="true" />
+
+    <EditText
+        android:id="@+id/editTextCodigoBarras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Código de barras (opcional)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editTextMarca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Marca (opcional)" />
+
+    <EditText
+        android:id="@+id/editTextCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Categoría (opcional)" />
+
+    <EditText
+        android:id="@+id/editTextNutriscore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nutriscore (A-E)" />
+
+    <ImageView
+        android:id="@+id/imageViewProducto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/buttonBuscarEnApi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscar en API" />
+
+    <Button
+        android:id="@+id/buttonGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar producto" />
+
+</LinearLayout>
