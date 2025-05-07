@@ -11,13 +11,13 @@ import com.example.dontwasteit.data.repository.ProductRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
-
     init {
         loadProducts()
     }
@@ -49,5 +49,12 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
                 ProductViewModel(app.repository)
             }
         }
+    }
+    val productosNoConsumidos = products.map { lista ->
+        lista.filter { !it.consumido }
+    }
+
+    val productosConsumidos = products.map { lista ->
+        lista.filter { it.consumido }
     }
 }

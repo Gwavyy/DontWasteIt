@@ -4,12 +4,10 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.dontwasteit.data.database.ProductDatabase
-import com.example.dontwasteit.data.database.entities.Product
 import com.example.dontwasteit.data.database.provider.DatabaseProvider
+import com.example.dontwasteit.data.database.entities.Product
 import com.example.dontwasteit.data.remote.api.RetrofitInstance
 import com.example.dontwasteit.data.repository.ProductRepository
 import com.example.dontwasteit.databinding.ActivityAddProductBinding
@@ -25,16 +23,19 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddProductBinding
     private lateinit var viewModel: ProductViewModel
     private var imagenUrlRecibida: String? = null
-    private var cantidadRecibida: String? = null  // 👈 NUEVO
+    private var cantidadRecibida: String? = null
+    private var marcaRecibida: String? = null
+    private var nutriscoreRecibido: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: ProductViewModel by viewModels { ProductViewModel.Factory }
+        val dao = DatabaseProvider.provideDatabase(this).productDao()
+        val repository = ProductRepository(dao)
+        viewModel = ProductViewModel(repository)
 
-        // Selector de fecha de caducidad
         binding.editTextFechaCaducidad.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
@@ -52,7 +53,6 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Buscar en API
         binding.buttonBuscarEnApi.setOnClickListener {
             val barcode = binding.editTextCodigoBarras.text.toString()
             if (barcode.isNotEmpty()) {
@@ -63,12 +63,12 @@ class AddProductActivity : AppCompatActivity() {
                         if (response.status == 1 && product?.product_name != null) {
                             imagenUrlRecibida = product.image_front_url
                             cantidadRecibida = product.quantity
+                            marcaRecibida = product.brands
+                            nutriscoreRecibido = product.nutriscore_grade
 
                             runOnUiThread {
                                 binding.editTextNombre.setText(product.product_name ?: "")
-                                binding.editTextMarca.setText(product.brands ?: "")
                                 binding.editTextCategoria.setText(product.categories ?: "")
-                                binding.editTextNutriscore.setText(product.nutriscore_grade ?: "")
 
                                 if (!imagenUrlRecibida.isNullOrEmpty()) {
                                     Glide.with(this@AddProductActivity)
@@ -95,11 +95,11 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Guardar producto
         binding.buttonGuardar.setOnClickListener {
             val nombre = binding.editTextNombre.text.toString().trim()
             val fechaCaducidad = binding.editTextFechaCaducidad.text.toString().trim()
             val codigoBarras = binding.editTextCodigoBarras.text.toString().trim()
+            val categoria = binding.editTextCategoria.text.toString().trim()
 
             if (nombre.isNotEmpty() && fechaCaducidad.isNotEmpty()) {
                 val producto = Product(
@@ -109,9 +109,9 @@ class AddProductActivity : AppCompatActivity() {
                     escaneado = codigoBarras.isNotEmpty(),
                     consumido = false,
                     barcode = if (codigoBarras.isNotEmpty()) codigoBarras else null,
-                    marca = binding.editTextMarca.text.toString().trim(),
-                    categoria = binding.editTextCategoria.text.toString().trim(),
-                    nutriscore = binding.editTextNutriscore.text.toString().trim(),
+                    marca = marcaRecibida,
+                    categoria = categoria,
+                    nutriscore = nutriscoreRecibido,
                     imagenUrl = imagenUrlRecibida,
                     cantidad = cantidadRecibida
                 )

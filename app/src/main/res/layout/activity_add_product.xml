@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTextNombre"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre del producto" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextFechaCaducidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Fecha de caducidad (AAAA-MM-DD)"
-        android:focusable="false"
-        android:clickable="true" />
+        <!-- Nombre -->
+        <EditText
+            android:id="@+id/editTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del producto"
+            android:inputType="text" />
 
-    <EditText
-        android:id="@+id/editTextCodigoBarras"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Código de barras (opcional)"
-        android:inputType="number" />
+        <!-- Fecha de caducidad -->
+        <EditText
+            android:id="@+id/editTextFechaCaducidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de caducidad"
+            android:focusable="false"
+            android:inputType="none" />
 
-    <EditText
-        android:id="@+id/editTextMarca"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Marca (opcional)" />
+        <!-- Código de barras -->
+        <EditText
+            android:id="@+id/editTextCodigoBarras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Código de barras"
+            android:inputType="number" />
 
-    <EditText
-        android:id="@+id/editTextCategoria"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Categoría (opcional)" />
+        <!-- Categoría -->
+        <EditText
+            android:id="@+id/editTextCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Categoría"
+            android:inputType="text" />
 
-    <EditText
-        android:id="@+id/editTextNutriscore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nutriscore (A-E)" />
+        <!-- Botón Buscar en API -->
+        <Button
+            android:id="@+id/buttonBuscarEnApi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buscar en API" />
 
-    <ImageView
-        android:id="@+id/imageViewProducto"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        <!-- Imagen del producto (opcional) -->
+        <ImageView
+            android:id="@+id/imageViewProducto"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="16dp" />
 
-    <Button
-        android:id="@+id/buttonBuscarEnApi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Buscar en API" />
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/buttonGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar producto"
+            android:layout_marginTop="24dp" />
 
-    <Button
-        android:id="@+id/buttonGuardar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Guardar producto" />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

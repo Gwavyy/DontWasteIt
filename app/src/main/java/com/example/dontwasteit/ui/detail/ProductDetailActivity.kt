@@ -1,13 +1,19 @@
 package com.example.dontwasteit.ui.detail
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.dontwasteit.databinding.ActivityProductDetailBinding
+import com.example.dontwasteit.viewmodel.ProductViewModel
 
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
+
+    private val viewModel: ProductViewModel by viewModels {
+        ProductViewModel.Factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,5 +38,7 @@ class ProductDetailActivity : AppCompatActivity() {
         Glide.with(this)
             .load(imagenUrl)
             .into(binding.imageViewProducto)
+
+
     }
 }

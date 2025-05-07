@@ -2,6 +2,7 @@ package com.example.dontwasteit.ui.main
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,10 @@ import com.example.dontwasteit.data.database.entities.Product
 import com.example.dontwasteit.databinding.ItemProductBinding
 import com.example.dontwasteit.ui.detail.ProductDetailActivity
 
-class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DiffCallback) {
+class ProductAdapter(private val mostrarBotones: Boolean = true) : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DiffCallback) {
+
+    var onConsumidoClick: ((Product) -> Unit)? = null
+    var onEliminarClick: ((Product) -> Unit)? = null
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -38,6 +42,30 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(Di
                 }
                 context.startActivity(intent)
             }
+            binding.buttonConsumido.setOnClickListener {
+                val actualizado = producto.copy(consumido = true)
+                onConsumidoClick?.invoke(actualizado)
+            }
+            binding.buttonEliminar.setOnClickListener {
+                onEliminarClick?.invoke(producto)
+            }
+            if (mostrarBotones) {
+                binding.buttonConsumido.visibility = View.VISIBLE
+                binding.buttonEliminar.visibility = View.VISIBLE
+
+                binding.buttonConsumido.setOnClickListener {
+                    val actualizado = producto.copy(consumido = true)
+                    onConsumidoClick?.invoke(actualizado)
+                }
+
+                binding.buttonEliminar.setOnClickListener {
+                    onEliminarClick?.invoke(producto)
+                }
+            } else {
+                binding.buttonConsumido.visibility = View.GONE
+                binding.buttonEliminar.visibility = View.GONE
+            }
+
         }
     }
 
