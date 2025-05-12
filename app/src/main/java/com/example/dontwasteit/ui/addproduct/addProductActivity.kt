@@ -1,5 +1,6 @@
 package com.example.dontwasteit.ui.addproduct
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ class AddProductActivity : AppCompatActivity() {
     private var marcaRecibida: String? = null
     private var nutriscoreRecibido: String? = null
 
+    @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(layoutInflater)
@@ -67,7 +69,7 @@ class AddProductActivity : AppCompatActivity() {
                             nutriscoreRecibido = product.nutriscore_grade
 
                             runOnUiThread {
-                                binding.editTextNombre.setText(product.product_name ?: "")
+                                binding.editTextNombre.setText(product.product_name)
                                 binding.editTextCategoria.setText(product.categories ?: "")
 
                                 if (!imagenUrlRecibida.isNullOrEmpty()) {

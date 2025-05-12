@@ -1,6 +1,7 @@
 package com.example.dontwasteit.data.repository
 
 import com.example.dontwasteit.data.database.dao.ProductDao
+import com.example.dontwasteit.data.database.entities.Estadistica
 import com.example.dontwasteit.data.database.entities.Product
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +24,6 @@ class ProductRepository(private val productDao: ProductDao) {
     suspend fun deleteAll() {
         productDao.deleteAllProducts()
     }
+
+
 }

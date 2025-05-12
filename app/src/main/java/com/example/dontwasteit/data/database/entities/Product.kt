@@ -16,6 +16,9 @@ data class Product(
     val categoria: String? = null,
     val nutriscore: String? = null,
     val imagenUrl: String? = null,
-    val cantidad: String? = null
+    val cantidad: String? = null,
+    val usuarioId: Int? = null,
+    val categoriaId: Int? = null
+
 )
 

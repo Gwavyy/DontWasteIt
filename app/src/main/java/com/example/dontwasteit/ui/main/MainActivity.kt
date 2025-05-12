@@ -6,11 +6,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.dontwasteit.databinding.ActivityMainBinding
+import com.example.dontwasteit.notificaciones.NotisCaducidad
 import com.example.dontwasteit.ui.addproduct.AddProductActivity
+import com.example.dontwasteit.ui.statistics.StatisticsActivity
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +46,29 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddProductActivity::class.java)
             startActivity(intent)
         }
+        binding.fabStats.setOnClickListener {
+            val intent = Intent(this, StatisticsActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        //Comprueba la caducidad una vez al dia
+        val workRequest = PeriodicWorkRequestBuilder<NotisCaducidad>(1, TimeUnit.DAYS)
+            .build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "caducidad_check",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+        }
+        //boton de prueba para notificaciones
+        binding.buttonTestNotificacion.setOnClickListener {
+            val testWork = OneTimeWorkRequestBuilder<NotisCaducidad>().build()
+            WorkManager.getInstance(this).enqueue(testWork)
+        }
+
     }
 
     private fun configurarRecyclerView(consumidos: Boolean) {

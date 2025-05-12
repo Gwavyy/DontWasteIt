@@ -21,4 +21,8 @@ interface ProductDao {
 
     @Query("DELETE FROM products")
     suspend fun deleteAllProducts()
+
+    @Query("SELECT * FROM products")
+    suspend fun getAllOnce(): List<Product>
 }
+
