@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import com.example.dontwasteit.DontWasteItApplication
 import com.example.dontwasteit.data.database.entities.Product
+import com.example.dontwasteit.data.repository.EstadisticaRepository
 import com.example.dontwasteit.data.repository.ProductRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
+class ProductViewModel(private val repository: ProductRepository, private val estadisticaRepository: EstadisticaRepository) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
@@ -41,12 +42,14 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
             repository.delete(product)
         }
     }
+    fun obtenerEstadisticas() = estadisticaRepository.obtenerTodas()
+
 
     companion object {
         val Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as DontWasteItApplication
-                ProductViewModel(app.repository)
+                ProductViewModel(app.repository, app.estadisticaRepository)
             }
         }
     }

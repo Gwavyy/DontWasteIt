@@ -35,6 +35,7 @@
         <activity android:name=".ui.addproduct.AddProductActivity" />
         <activity android:name=".ui.detail.ProductDetailActivity" />
         <activity android:name=".ui.statistics.StatisticsActivity" />
+        <activity android:name=".ui.statistics.StatisticsHistoryActivity" />
     </application>
 
 </manifest>

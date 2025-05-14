@@ -14,6 +14,7 @@ import com.example.dontwasteit.databinding.ActivityMainBinding
 import com.example.dontwasteit.notificaciones.NotisCaducidad
 import com.example.dontwasteit.ui.addproduct.AddProductActivity
 import com.example.dontwasteit.ui.statistics.StatisticsActivity
+import com.example.dontwasteit.ui.statistics.StatisticsHistoryActivity
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
         }
+        binding.fabHistory.setOnClickListener {
+            startActivity(Intent(this, StatisticsHistoryActivity::class.java))
+        }
+
 
 
         //Comprueba la caducidad una vez al dia

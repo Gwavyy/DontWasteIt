@@ -35,12 +35,14 @@
             android:inputType="number" />
 
         <!-- Categoría -->
-        <EditText
-            android:id="@+id/editTextCategoria"
+        <Spinner
+            android:id="@+id/spinnerCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Categoría"
-            android:inputType="text" />
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dropdown"
+            />
+
 
         <!-- Botón Buscar en API -->
         <Button

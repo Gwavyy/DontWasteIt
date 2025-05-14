@@ -4,14 +4,16 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.dontwasteit.data.database.provider.DatabaseProvider
 import com.example.dontwasteit.data.database.entities.Product
+import com.example.dontwasteit.databinding.ActivityAddProductBinding
 import com.example.dontwasteit.data.remote.api.RetrofitInstance
 import com.example.dontwasteit.data.repository.ProductRepository
-import com.example.dontwasteit.databinding.ActivityAddProductBinding
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +24,10 @@ import java.util.*
 class AddProductActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddProductBinding
-    private lateinit var viewModel: ProductViewModel
+    private val viewModel: ProductViewModel by viewModels{
+        ProductViewModel.Factory
+    }
+
     private var imagenUrlRecibida: String? = null
     private var cantidadRecibida: String? = null
     private var marcaRecibida: String? = null
@@ -35,9 +40,10 @@ class AddProductActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val dao = DatabaseProvider.provideDatabase(this).productDao()
+        val categoriaDao = DatabaseProvider.provideDatabase(this).categoriaDao()
         val repository = ProductRepository(dao)
-        viewModel = ProductViewModel(repository)
 
+        // Configurar calendario para fecha
         binding.editTextFechaCaducidad.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
@@ -55,6 +61,21 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
+        // Cargar categorías en el spinner
+        CoroutineScope(Dispatchers.IO).launch {
+            val categorias = categoriaDao.getAll()
+            runOnUiThread {
+                val adapter = ArrayAdapter(
+                    this@AddProductActivity,
+                    android.R.layout.simple_spinner_item,
+                    categorias.map { it.nombre }
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerCategoria.adapter = adapter
+            }
+        }
+
+        // Buscar producto por código de barras
         binding.buttonBuscarEnApi.setOnClickListener {
             val barcode = binding.editTextCodigoBarras.text.toString()
             if (barcode.isNotEmpty()) {
@@ -70,14 +91,11 @@ class AddProductActivity : AppCompatActivity() {
 
                             runOnUiThread {
                                 binding.editTextNombre.setText(product.product_name)
-                                binding.editTextCategoria.setText(product.categories ?: "")
-
                                 if (!imagenUrlRecibida.isNullOrEmpty()) {
                                     Glide.with(this@AddProductActivity)
                                         .load(imagenUrlRecibida)
                                         .into(binding.imageViewProducto)
                                 }
-
                                 Toast.makeText(this@AddProductActivity, "Producto encontrado", Toast.LENGTH_SHORT).show()
                             }
                         } else {
@@ -97,28 +115,33 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
+        // Guardar producto
         binding.buttonGuardar.setOnClickListener {
             val nombre = binding.editTextNombre.text.toString().trim()
             val fechaCaducidad = binding.editTextFechaCaducidad.text.toString().trim()
             val codigoBarras = binding.editTextCodigoBarras.text.toString().trim()
-            val categoria = binding.editTextCategoria.text.toString().trim()
+            val categoriaSeleccionada = binding.spinnerCategoria.selectedItem?.toString()
 
-            if (nombre.isNotEmpty() && fechaCaducidad.isNotEmpty()) {
-                val producto = Product(
-                    nombre = nombre,
-                    fechaCaducidad = fechaCaducidad,
-                    fechaRegistro = getTodayDateString(),
-                    escaneado = codigoBarras.isNotEmpty(),
-                    consumido = false,
-                    barcode = if (codigoBarras.isNotEmpty()) codigoBarras else null,
-                    marca = marcaRecibida,
-                    categoria = categoria,
-                    nutriscore = nutriscoreRecibido,
-                    imagenUrl = imagenUrlRecibida,
-                    cantidad = cantidadRecibida
-                )
-
+            if (nombre.isNotEmpty() && fechaCaducidad.isNotEmpty() && categoriaSeleccionada != null) {
                 CoroutineScope(Dispatchers.IO).launch {
+                    val categorias = categoriaDao.getAll()
+                    val categoriaId = categorias.firstOrNull { it.nombre == categoriaSeleccionada }?.id
+
+                    val producto = Product(
+                        nombre = nombre,
+                        fechaCaducidad = fechaCaducidad,
+                        fechaRegistro = getTodayDateString(),
+                        escaneado = codigoBarras.isNotEmpty(),
+                        consumido = false,
+                        barcode = if (codigoBarras.isNotEmpty()) codigoBarras else null,
+                        marca = marcaRecibida,
+                        categoriaId = categoriaId,
+                        nutriscore = nutriscoreRecibido,
+                        imagenUrl = imagenUrlRecibida,
+                        cantidad = cantidadRecibida,
+                        usuarioId = 1 // único usuario por ahora
+                    )
+
                     viewModel.insert(producto)
                     finish()
                 }
