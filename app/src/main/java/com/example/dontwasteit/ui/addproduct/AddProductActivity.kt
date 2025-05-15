@@ -2,18 +2,22 @@ package com.example.dontwasteit.ui.addproduct
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.dontwasteit.data.database.provider.DatabaseProvider
+import com.example.dontwasteit.data.database.entities.Categoria
 import com.example.dontwasteit.data.database.entities.Product
-import com.example.dontwasteit.databinding.ActivityAddProductBinding
+import com.example.dontwasteit.data.database.provider.DatabaseProvider
 import com.example.dontwasteit.data.remote.api.RetrofitInstance
 import com.example.dontwasteit.data.repository.ProductRepository
+import com.example.dontwasteit.databinding.ActivityAddProductBinding
+import com.example.dontwasteit.ui.scanner.BarcodeScannerActivity
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +28,7 @@ import java.util.*
 class AddProductActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddProductBinding
-    private val viewModel: ProductViewModel by viewModels{
+    private val viewModel: ProductViewModel by viewModels {
         ProductViewModel.Factory
     }
 
@@ -32,6 +36,16 @@ class AddProductActivity : AppCompatActivity() {
     private var cantidadRecibida: String? = null
     private var marcaRecibida: String? = null
     private var nutriscoreRecibido: String? = null
+
+    // Modern launcher
+    private val barcodeLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val barcode = result.data?.getStringExtra("barcode")
+            binding.editTextCodigoBarras.setText(barcode)
+        }
+    }
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +57,7 @@ class AddProductActivity : AppCompatActivity() {
         val categoriaDao = DatabaseProvider.provideDatabase(this).categoriaDao()
         val repository = ProductRepository(dao)
 
-        // Configurar calendario para fecha
+        // Calendario
         binding.editTextFechaCaducidad.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
@@ -61,9 +75,28 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Cargar categorías en el spinner
+        // Botón de escaneo con cámara
+        binding.buttonScanBarcode.setOnClickListener {
+            val intent = Intent(this, BarcodeScannerActivity::class.java)
+            barcodeLauncher.launch(intent)
+        }
+
+        // Spinner de categorías
         CoroutineScope(Dispatchers.IO).launch {
-            val categorias = categoriaDao.getAll()
+            var categorias = categoriaDao.getAll()
+            if (categorias.isEmpty()) {
+                val defaultCategorias = listOf(
+                    Categoria(nombre = "Lácteos"),
+                    Categoria(nombre = "Carnes"),
+                    Categoria(nombre = "Frutas"),
+                    Categoria(nombre = "Verduras"),
+                    Categoria(nombre = "Bebidas"),
+                    Categoria(nombre = "Panadería"),
+                    Categoria(nombre = "Otros")
+                )
+                categoriaDao.insertAll(defaultCategorias)
+                categorias = categoriaDao.getAll()
+            }
             runOnUiThread {
                 val adapter = ArrayAdapter(
                     this@AddProductActivity,
@@ -75,7 +108,7 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Buscar producto por código de barras
+        // Botón Buscar en API
         binding.buttonBuscarEnApi.setOnClickListener {
             val barcode = binding.editTextCodigoBarras.text.toString()
             if (barcode.isNotEmpty()) {
@@ -115,7 +148,7 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Guardar producto
+        // Botón Guardar
         binding.buttonGuardar.setOnClickListener {
             val nombre = binding.editTextNombre.text.toString().trim()
             val fechaCaducidad = binding.editTextFechaCaducidad.text.toString().trim()
@@ -136,10 +169,11 @@ class AddProductActivity : AppCompatActivity() {
                         barcode = if (codigoBarras.isNotEmpty()) codigoBarras else null,
                         marca = marcaRecibida,
                         categoriaId = categoriaId,
+                        categoria = categoriaSeleccionada,
                         nutriscore = nutriscoreRecibido,
                         imagenUrl = imagenUrlRecibida,
                         cantidad = cantidadRecibida,
-                        usuarioId = 1 // único usuario por ahora
+                        usuarioId = 1
                     )
 
                     viewModel.insert(producto)

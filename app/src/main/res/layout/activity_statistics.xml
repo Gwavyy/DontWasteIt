@@ -1,45 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FFF8FC">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:spacing="12dp">
 
+        <!-- Título si no hay datos -->
         <TextView
-            android:id="@+id/textTotal"
+            android:id="@+id/textSinDatos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No hay datos de este mes todavía."
+            android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:padding="8dp"
+            android:visibility="gone"
+            android:textColor="#FF4081" />
 
-        <TextView
-            android:id="@+id/textConsumidos"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!-- Tarjetas individuales -->
 
-        <TextView
-            android:id="@+id/textNoConsumidos"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
 
-        <TextView
-            android:id="@+id/textCaducados"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textConsumidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Consumidos: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textPorcentaje"
-            android:textSize="16sp"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textNoConsumidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No consumidos: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textCaducados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Caducados sin consumir: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textPorcentaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Desperdicio: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textCategoriaMasConsumida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categoría más consumida: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textComparacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comparación con la media: -"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="#4CAF50"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total: -"
+                android:textSize="16sp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </ScrollView>

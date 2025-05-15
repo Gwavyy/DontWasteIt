@@ -5,9 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "estadisticas")
 data class Estadistica(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val fecha: String,
+    @PrimaryKey val fecha: String, // Ej: "2025-05"
     val productosConsumidos: Int,
     val productosDesechados: Int,
-    val porcentajeDesechos: Float
+    val porcentajeDesechos: Float,
+    val categoriaMasConsumida: String?,
+    val productosNoConsumidos: Int
 )

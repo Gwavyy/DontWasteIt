@@ -2,6 +2,7 @@ package com.example.dontwasteit.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -14,11 +15,12 @@ import com.example.dontwasteit.databinding.ActivityMainBinding
 import com.example.dontwasteit.notificaciones.NotisCaducidad
 import com.example.dontwasteit.ui.addproduct.AddProductActivity
 import com.example.dontwasteit.ui.statistics.StatisticsActivity
-import com.example.dontwasteit.ui.statistics.StatisticsHistoryActivity
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +38,26 @@ class MainActivity : AppCompatActivity() {
 
         configurarRecyclerView(mostrandoConsumidos)
 
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val mesGuardado = prefs.getString("ultimoMes", null)
+        val mesActual = LocalDate.now().toString().substring(0, 7)
+
+        if (mesGuardado != mesActual) {
+            lifecycleScope.launch {
+                viewModel.resetearMes()
+                prefs.edit() { putString("ultimoMes", mesActual) }
+
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Nuevo mes detectado. Datos y estadísticas reiniciados.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+
+
         // Escuchar cambios en el switch
         binding.switchMostrarConsumidos.setOnCheckedChangeListener { _, isChecked ->
             mostrandoConsumidos = isChecked
@@ -50,9 +72,6 @@ class MainActivity : AppCompatActivity() {
         binding.fabStats.setOnClickListener {
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
-        }
-        binding.fabHistory.setOnClickListener {
-            startActivity(Intent(this, StatisticsHistoryActivity::class.java))
         }
 
 
@@ -80,11 +99,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = ProductAdapter(mostrarBotones = !consumidos).apply {
             onConsumidoClick = { productoActualizado ->
                 viewModel.insert(productoActualizado)
+                viewModel.actualizarEstadisticaMensual()
             }
             onEliminarClick = { productoAEliminar ->
                 viewModel.delete(productoAEliminar)
             }
         }
+
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter

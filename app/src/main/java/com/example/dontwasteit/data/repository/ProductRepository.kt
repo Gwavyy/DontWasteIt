@@ -1,7 +1,6 @@
 package com.example.dontwasteit.data.repository
 
 import com.example.dontwasteit.data.database.dao.ProductDao
-import com.example.dontwasteit.data.database.entities.Estadistica
 import com.example.dontwasteit.data.database.entities.Product
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +12,7 @@ class ProductRepository(private val productDao: ProductDao) {
         productDao.insertProduct(product)
     }
 
+    //Por si implemento edicion de productos
     suspend fun update(product: Product) {
         productDao.updateProduct(product)
     }

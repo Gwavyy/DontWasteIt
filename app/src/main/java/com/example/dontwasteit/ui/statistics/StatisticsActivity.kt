@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.dontwasteit.databinding.ActivityStatisticsBinding
 import com.example.dontwasteit.viewmodel.ProductViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -22,30 +19,31 @@ class StatisticsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         lifecycleScope.launch {
-            viewModel.products.collect { productos ->
-                val total = productos.size
-                val consumidos = productos.count { it.consumido }
-                val noConsumidos = total - consumidos
+            val estadistica = viewModel.obtenerEstadisticaDelMes()
 
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                val hoy = LocalDate.now()
+            if (estadistica != null) {
+                binding.textTotal.text =
+                    "Total de productos: ${estadistica.productosConsumidos + estadistica.productosDesechados}"
+                binding.textConsumidos.text =
+                    "Consumidos: ${estadistica.productosConsumidos}"
+                binding.textNoConsumidos.text =
+                    "No consumidos: ${estadistica.productosNoConsumidos}"
+                binding.textCaducados.text =
+                    "Caducados sin consumir: ${estadistica.productosDesechados}"
+                binding.textPorcentaje.text =
+                    "Desperdicio: %.1f%%".format(estadistica.porcentajeDesechos)
 
-                val caducados = productos.count {
-                    !it.consumido && try {
-                        LocalDate.parse(it.fechaCaducidad, formatter).isBefore(hoy)
-                    } catch (e: Exception) {
-                        false
-                    }
+                val mensaje = if (estadistica.porcentajeDesechos <= 12.9f) {
+                    "¡Enhorabuena! Estás por debajo de la media española de desperdicio (12.9%)"
+                } else {
+                    "Estás por encima de la media española de desperdicio (12.9%)"
                 }
+                binding.textComparacion.text = mensaje
 
-                val porcentajeDesperdicio = if (total > 0) (caducados.toFloat() / total) * 100 else 0f
-
-                // Mostrar en pantalla
-                binding.textTotal.text = "Total de productos: $total"
-                binding.textConsumidos.text = "Consumidos: $consumidos"
-                binding.textNoConsumidos.text = "No consumidos: $noConsumidos"
-                binding.textCaducados.text = "Caducados sin consumir: $caducados"
-                binding.textPorcentaje.text = "Desperdicio: %.1f%%".format(porcentajeDesperdicio)
+                binding.textCategoriaMasConsumida.text =
+                    "Categoría más consumida: ${estadistica.categoriaMasConsumida ?: "Ninguna"}"
+            } else {
+                binding.textTotal.text = "No hay datos de este mes todavía."
             }
         }
     }

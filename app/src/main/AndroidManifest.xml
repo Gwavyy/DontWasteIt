@@ -5,8 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <uses-permission android:name="android.permission.CAMERA"
-        tools:ignore="ManifestOrder" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -35,7 +34,8 @@
         <activity android:name=".ui.addproduct.AddProductActivity" />
         <activity android:name=".ui.detail.ProductDetailActivity" />
         <activity android:name=".ui.statistics.StatisticsActivity" />
-        <activity android:name=".ui.statistics.StatisticsHistoryActivity" />
+        <activity android:name=".ui.scanner.BarcodeScannerActivity" />
+
     </application>
 
 </manifest>
