@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import androidx.core.content.edit
+import com.example.dontwasteit.ui.welcome.OnboardingActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +42,14 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val mesGuardado = prefs.getString("ultimoMes", null)
         val mesActual = LocalDate.now().toString().substring(0, 7)
+        val prefs2 = getSharedPreferences("onboarding", MODE_PRIVATE)
+        val firstTime = prefs2.getBoolean("first_time", true)
+
+        if (firstTime) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+        }
+
 
         if (mesGuardado != mesActual) {
             lifecycleScope.launch {
@@ -56,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
 
         // Escuchar cambios en el switch
         binding.switchMostrarConsumidos.setOnCheckedChangeListener { _, isChecked ->

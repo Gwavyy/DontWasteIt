@@ -35,7 +35,7 @@
         <activity android:name=".ui.detail.ProductDetailActivity" />
         <activity android:name=".ui.statistics.StatisticsActivity" />
         <activity android:name=".ui.scanner.BarcodeScannerActivity" />
-
+        <activity android:name=".ui.welcome.OnboardingActivity" />
     </application>
 
 </manifest>
