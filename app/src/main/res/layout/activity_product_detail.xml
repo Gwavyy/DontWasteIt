@@ -1,71 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#EEF5E6">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="?android:attr/dividerHorizontal"
+        android:showDividers="middle"
+        android:dividerPadding="8dp">
 
         <ImageView
             android:id="@+id/imageViewProducto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/textNombre"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/textCaducidad"
-            android:layout_width="wrap_content"
+
+        <!-- Tarjetas para cada campo -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Caduca: -" />
+            android:layout_marginTop="8dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
 
-        <TextView
-            android:id="@+id/textMarca"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textCaducidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Caduca: -"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textNutriscore"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
 
-        <TextView
-            android:id="@+id/textCantidad"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textMarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textCategoria"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
 
-        <Button
+            <TextView
+                android:id="@+id/textNutriscore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
+
+            <TextView
+                android:id="@+id/textCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
+
+            <TextView
+                android:id="@+id/textCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonConsumir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Marcar como consumido"
+            android:textColor="@android:color/white"
             android:layout_marginTop="24dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:backgroundTint="#4CAF50"
+            app:cornerRadius="40dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonEliminar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Eliminar producto"
+            android:textColor="@android:color/white"
             android:layout_marginTop="12dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:backgroundTint="#E53935"
+            app:cornerRadius="40dp" />
 
     </LinearLayout>
 </ScrollView>

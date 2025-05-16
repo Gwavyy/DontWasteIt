@@ -17,15 +17,21 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+//ViewModel principal de la app, encargado de gestionar los productos
+// Gestiona tambien las estadisticas del mes actual. Se comunica con los repositorios
 class ProductViewModel(private val repository: ProductRepository, private val estadisticaRepository: EstadisticaRepository) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
     init {
+        // Carga inicial de los producto
         loadProducts()
     }
 
+    //Lanza una corrutina que recoge continuamente los productos
+    // desde el repositorio y actualiza el estado interno.
     private fun loadProducts() {
         viewModelScope.launch {
             repository.allProducts.collect {
@@ -34,49 +40,57 @@ class ProductViewModel(private val repository: ProductRepository, private val es
         }
     }
 
+    //Inserta un producto en la base de datos
     fun insert(product: Product) {
         viewModelScope.launch {
             repository.insert(product)
         }
     }
 
+    //Elimina un producto de la base de datos
     fun delete(product: Product) {
         viewModelScope.launch {
             repository.delete(product)
         }
     }
+    //Devuelve la estadística correspondiente al mes actual.
     suspend fun obtenerEstadisticaDelMes(): Estadistica? {
         val mes = LocalDate.now().toString().substring(0, 7)
         return estadisticaRepository.obtenerDelMes(mes)
     }
 
-
+    //Actualiza la estadística mensual. Calcula cuantos productos han sido consumidos,
+    //cuantos han caducado, el porcentaje de desperdicio y cual es la categoría más consumida.
     fun actualizarEstadisticaMensual() {
         viewModelScope.launch {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Añade esto
+            val hoy = LocalDate.now()
             val productos = repository.allProducts.first()
-            val mes = LocalDate.now().toString().substring(0, 7)
+            val mes = hoy.toString().substring(0, 7)
 
             val productosDelMes = productos.filter {
                 it.fechaRegistro.startsWith(mes)
             }
-            val noConsumidos = productosDelMes.filter {
-                !it.consumido && try {
-                    !LocalDate.parse(it.fechaCaducidad).isBefore(LocalDate.now())
-                } catch (_: Exception) {
-                    false
-                }
-            }.size
 
-            val total = productosDelMes.size
-            val consumidos = productosDelMes.count { it.consumido }
-            val caducados = productosDelMes.count {
+            val noConsumidos = productosDelMes.count {
                 !it.consumido && try {
-                    LocalDate.parse(it.fechaCaducidad).isBefore(LocalDate.now())
-                } catch (e: Exception) {
+                    !LocalDate.parse(it.fechaCaducidad, formatter).isBefore(hoy)
+                } catch (_: Exception) {
                     false
                 }
             }
 
+            val consumidos = productosDelMes.count { it.consumido }
+
+            val caducados = productosDelMes.count {
+                !it.consumido && try {
+                    LocalDate.parse(it.fechaCaducidad, formatter).isBefore(hoy)
+                } catch (_: Exception) {
+                    false
+                }
+            }
+
+            val total = productosDelMes.size
             val porcentaje = if (total > 0) (caducados.toFloat() / total) * 100 else 0f
 
             val categoriaMasConsumida = productosDelMes.filter { it.consumido && it.categoria != null }
@@ -108,6 +122,7 @@ class ProductViewModel(private val repository: ProductRepository, private val es
             }
         }
     }
+    //Para separar los productos segun su estado de consumo
     val productosNoConsumidos = products.map { lista ->
         lista.filter { !it.consumido }
     }
@@ -115,6 +130,7 @@ class ProductViewModel(private val repository: ProductRepository, private val es
     val productosConsumidos = products.map { lista ->
         lista.filter { it.consumido }
     }
+    //Al cambiar de mes borra todos los productos y estadísticas
     fun resetearMes() {
         viewModelScope.launch {
             repository.deleteAll()

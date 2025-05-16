@@ -1,20 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="#EEF5E6">
 
+    <!-- ViewPager para las pantallas de introducción -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <Button
+    <!-- Botón de comenzar -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonEmpezar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Empezar"
         android:enabled="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#4CAF50"
+        android:textAllCaps="false"
+        app:cornerRadius="40dp"
         android:layout_marginTop="16dp" />
+
 </LinearLayout>

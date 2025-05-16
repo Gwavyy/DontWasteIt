@@ -4,16 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#FFF8FC">
+    android:background="#EEF5E6">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:spacing="12dp">
+        android:divider="?android:attr/dividerHorizontal"
+        android:showDividers="middle"
+        android:dividerPadding="8dp">
 
-        <!-- Título si no hay datos -->
+        <TextView
+            android:id="@+id/textTituloEstadisticas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas del mes"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
         <TextView
             android:id="@+id/textSinDatos"
             android:layout_width="match_parent"
@@ -24,16 +36,16 @@
             android:textStyle="bold"
             android:padding="8dp"
             android:visibility="gone"
-            android:textColor="#FF4081" />
+            android:textColor="#4CAF50" />
 
-        <!-- Tarjetas individuales -->
-
+        <!-- Tarjetas para cada dato -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textConsumidos"
@@ -41,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:text="Consumidos: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -49,7 +62,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textNoConsumidos"
@@ -57,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:text="No consumidos: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -65,7 +80,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textCaducados"
@@ -73,7 +89,8 @@
                 android:layout_height="wrap_content"
                 android:text="Caducados sin consumir: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -81,7 +98,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textPorcentaje"
@@ -89,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:text="Desperdicio: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -97,7 +116,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textCategoriaMasConsumida"
@@ -105,7 +125,8 @@
                 android:layout_height="wrap_content"
                 android:text="Categoría más consumida: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -113,7 +134,8 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textComparacion"
@@ -125,12 +147,14 @@
                 android:textColor="#4CAF50"
                 android:padding="16dp" />
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#ffffff">
 
             <TextView
                 android:id="@+id/textTotal"
@@ -138,7 +162,8 @@
                 android:layout_height="wrap_content"
                 android:text="Total: -"
                 android:textSize="16sp"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:textColor="@android:color/black" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

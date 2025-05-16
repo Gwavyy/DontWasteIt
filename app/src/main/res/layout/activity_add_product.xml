@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F1F8E9">
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,7 +26,8 @@
             android:layout_height="wrap_content"
             android:hint="Fecha de caducidad"
             android:focusable="false"
-            android:inputType="none" />
+            android:inputType="none"
+            android:layout_marginTop="8dp" />
 
         <!-- Código de barras -->
         <LinearLayout
@@ -51,40 +54,46 @@
                 android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
-
         <!-- Categoría -->
         <Spinner
             android:id="@+id/spinnerCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:spinnerMode="dropdown"
-            />
-
+            android:spinnerMode="dropdown" />
 
         <!-- Botón Buscar en API -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonBuscarEnApi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buscar en API" />
+            android:text="Buscar en API"
+            style="@style/Widget.MaterialComponents.Button"
+            app:cornerRadius="24dp"
+            app:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp" />
 
-        <!-- Imagen del producto (opcional) -->
+        <!-- Imagen del producto -->
         <ImageView
             android:id="@+id/imageViewProducto"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
 
         <!-- Botón Guardar -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonGuardar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Guardar producto"
+            style="@style/Widget.MaterialComponents.Button"
+            app:cornerRadius="24dp"
+            app:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"
             android:layout_marginTop="24dp" />
-
     </LinearLayout>
 </ScrollView>

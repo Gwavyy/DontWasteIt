@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 
+//Activity para escanear codigos de barras con el ML Kit de Google.
 class BarcodeScannerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBarcodeScannerBinding
@@ -31,13 +32,14 @@ class BarcodeScannerActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    //Escanea el codigo de barras en la imagen capturada
     private fun scanBarcode(bitmap: Bitmap) {
         val image = InputImage.fromBitmap(bitmap, 0)
         val scanner = BarcodeScanning.getClient()
 
         scanner.process(image)
             .addOnSuccessListener { barcodes ->
+                // Si hay algun codigo escaneado, lo devuelve a la actividad anterior
                 if (barcodes.isNotEmpty()) {
                     val barcode = barcodes[0].rawValue
                     val intent = Intent().apply {
@@ -58,11 +60,12 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Ejecutado al crear la actividad
         super.onCreate(savedInstanceState)
         binding = ActivityBarcodeScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Verificar y solicitar permiso de cámara si es necesario
+        // Verificar y solicitar permiso de camara si es necesario
         if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 1002)
         } else {
@@ -70,6 +73,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
         }
     }
 
+    //Lanza la camara para capturar una imagen.
     private fun lanzarCamara() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -79,7 +83,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    //Se lanza al aceptar el permiso
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {

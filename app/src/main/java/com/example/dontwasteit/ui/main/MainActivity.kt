@@ -2,34 +2,35 @@ package com.example.dontwasteit.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.example.dontwasteit.databinding.ActivityMainBinding
 import com.example.dontwasteit.notificaciones.NotisCaducidad
 import com.example.dontwasteit.ui.addproduct.AddProductActivity
 import com.example.dontwasteit.ui.statistics.StatisticsActivity
+import com.example.dontwasteit.ui.welcome.OnboardingActivity
 import com.example.dontwasteit.viewmodel.ProductViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import androidx.core.content.edit
-import com.example.dontwasteit.ui.welcome.OnboardingActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    // ViewModel que maneja productos y estadisticas
     private val viewModel: ProductViewModel by viewModels {
         ProductViewModel.Factory
     }
 
+    // Estado del switch de productos consumidos
     private var mostrandoConsumidos = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,24 +38,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Configura lista de productos
         configurarRecyclerView(mostrandoConsumidos)
 
+        // Gestion del pop-up y del mes actual
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val mesGuardado = prefs.getString("ultimoMes", null)
         val mesActual = LocalDate.now().toString().substring(0, 7)
+
         val prefs2 = getSharedPreferences("onboarding", MODE_PRIVATE)
         val firstTime = prefs2.getBoolean("first_time", true)
 
+        // Lanza onboarding si es la primera vez
         if (firstTime) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
         }
 
-
+        // Si ha cambiado el mes, se resetean productos y estadisticas
         if (mesGuardado != mesActual) {
             lifecycleScope.launch {
                 viewModel.resetearMes()
-                prefs.edit() { putString("ultimoMes", mesActual) }
+                prefs.edit { putString("ultimoMes", mesActual) }
 
                 runOnUiThread {
                     Toast.makeText(
@@ -66,42 +71,61 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Escuchar cambios en el switch
+        // Switch para mostrar u ocultar productos consumidos
         binding.switchMostrarConsumidos.setOnCheckedChangeListener { _, isChecked ->
             mostrandoConsumidos = isChecked
             configurarRecyclerView(mostrandoConsumidos)
         }
 
-        // Botón flotante para añadir productos
+        // Boton para añadir producto
         binding.fabAddProducto.setOnClickListener {
-            val intent = Intent(this, AddProductActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, AddProductActivity::class.java))
         }
+
+        // Boton para ver estadísticas
         binding.fabStats.setOnClickListener {
-            val intent = Intent(this, StatisticsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, StatisticsActivity::class.java))
         }
 
-
-
-        //Comprueba la caducidad una vez al dia
-        val workRequest = PeriodicWorkRequestBuilder<NotisCaducidad>(1, TimeUnit.DAYS)
-            .build()
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "caducidad_check",
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest)
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
-        }
-        //boton de prueba para notificaciones
+        // Boton de prueba para lanzar notificacion manualmente
         binding.buttonTestNotificacion.setOnClickListener {
             val testWork = OneTimeWorkRequestBuilder<NotisCaducidad>().build()
             WorkManager.getInstance(this).enqueue(testWork)
         }
 
+        // Boton para reiniciar onboarding manualmente
+        binding.buttonResetOnboarding.apply {
+            visibility = View.VISIBLE // ocultarlo en versión final con GONE
+            setOnClickListener {
+                getSharedPreferences("onboarding", MODE_PRIVATE)
+                    .edit{
+                        putBoolean("first_time", true)
+                    }
+                Toast.makeText(
+                    this@MainActivity,
+                    "Onboarding reiniciado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+
+        // Crea una tarea periodica que comprueba caducidad cada 24h
+        val workRequest = PeriodicWorkRequestBuilder<NotisCaducidad>(1, TimeUnit.DAYS).build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "caducidad_check",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+
+        // Pedir permiso de notificaciones en Android 13+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+        }
     }
+
+
+     // Configura el RecyclerView segun si se quieren ver productos consumidos o no.
 
     private fun configurarRecyclerView(consumidos: Boolean) {
         val adapter = ProductAdapter(mostrarBotones = !consumidos).apply {
@@ -114,10 +138,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
+        // Escuchar productos desde el ViewModel y mostrarlos en la lista
         lifecycleScope.launch {
             if (consumidos) {
                 viewModel.productosConsumidos.collectLatest { productos ->

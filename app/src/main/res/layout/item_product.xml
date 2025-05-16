@@ -1,70 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:elevation="4dp"
-    android:foreground="?attr/selectableItemBackground">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
-        android:padding="8dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical">
 
+        <!-- Imagen -->
         <ImageView
             android:id="@+id/imageViewProducto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:scaleType="centerCrop"
-            android:contentDescription="Imagen producto" />
+            android:layout_marginEnd="8dp"/>
 
+        <!-- Info del producto -->
         <LinearLayout
-            android:layout_marginStart="12dp"
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:ignore="ExtraText">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textNombre"
-                android:textStyle="bold"
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/textNutriscore"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/textCaducidad"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageButton
-                android:id="@+id/buttonEliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="Eliminar producto"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginEnd="8dp" />
+                android:textSize="14sp"/>
 
-            <ImageButton
-                android:id="@+id/buttonConsumido"
+            <!-- Botones de acción -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_check"
-                android:contentDescription="Marcar como consumido"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
 
+                <ImageButton
+                    android:id="@+id/buttonEliminar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Eliminar"/>
+
+                <ImageButton
+                    android:id="@+id/buttonConsumido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_check"
+                    android:contentDescription="Consumido"/>
+            </LinearLayout>
         </LinearLayout>
+
+        <!-- Indicador de caducidad a la derecha -->
+        <View
+            android:id="@+id/circleIndicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/circle_green"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

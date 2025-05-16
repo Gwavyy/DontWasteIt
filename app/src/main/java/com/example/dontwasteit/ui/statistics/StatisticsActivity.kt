@@ -17,10 +17,10 @@ class StatisticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStatisticsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // Inicia una corrutina para recuperar y mostrar las estadísticas del mes
         lifecycleScope.launch {
             val estadistica = viewModel.obtenerEstadisticaDelMes()
-
+            // Si existen datos para el mes actual, se muestran en sus respectivos TextView
             if (estadistica != null) {
                 binding.textTotal.text =
                     "Total de productos: ${estadistica.productosConsumidos + estadistica.productosDesechados}"
@@ -33,13 +33,15 @@ class StatisticsActivity : AppCompatActivity() {
                 binding.textPorcentaje.text =
                     "Desperdicio: %.1f%%".format(estadistica.porcentajeDesechos)
 
-                val mensaje = if (estadistica.porcentajeDesechos <= 12.9f) {
-                    "¡Enhorabuena! Estás por debajo de la media española de desperdicio (12.9%)"
+                // Compara el porcentaje con la media nacional y mostrar un mensaje
+                val mensaje = if (estadistica.porcentajeDesechos <= 4.4f) {
+                    "¡Enhorabuena! Estás por debajo de la media española de desperdicio (4.4%)"
                 } else {
-                    "Estás por encima de la media española de desperdicio (12.9%)"
+                    "Estás por encima de la media española de desperdicio (4.4%)"
                 }
                 binding.textComparacion.text = mensaje
 
+                // Mostrar la categoría mas consumida en el mes o ninguna si no hay datos
                 binding.textCategoriaMasConsumida.text =
                     "Categoría más consumida: ${estadistica.categoriaMasConsumida ?: "Ninguna"}"
             } else {

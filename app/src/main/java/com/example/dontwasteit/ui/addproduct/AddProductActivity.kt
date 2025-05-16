@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,13 +32,13 @@ class AddProductActivity : AppCompatActivity() {
     private val viewModel: ProductViewModel by viewModels {
         ProductViewModel.Factory
     }
-
+    // Variables para datos recuperados desde la API
     private var imagenUrlRecibida: String? = null
     private var cantidadRecibida: String? = null
     private var marcaRecibida: String? = null
     private var nutriscoreRecibido: String? = null
 
-    // Modern launcher
+    // Launcher para abrir la cámara y escanear codigo de barra
     private val barcodeLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -57,7 +58,7 @@ class AddProductActivity : AppCompatActivity() {
         val categoriaDao = DatabaseProvider.provideDatabase(this).categoriaDao()
         val repository = ProductRepository(dao)
 
-        // Calendario
+        // Calendario para fecha de caducidad
         binding.editTextFechaCaducidad.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
@@ -75,13 +76,13 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Botón de escaneo con cámara
+        // Boton de escaneo con cámara
         binding.buttonScanBarcode.setOnClickListener {
             val intent = Intent(this, BarcodeScannerActivity::class.java)
             barcodeLauncher.launch(intent)
         }
 
-        // Spinner de categorías
+        // Spinner de categorias
         CoroutineScope(Dispatchers.IO).launch {
             var categorias = categoriaDao.getAll()
             if (categorias.isEmpty()) {
@@ -108,7 +109,7 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Botón Buscar en API
+        // Boton Buscar en API
         binding.buttonBuscarEnApi.setOnClickListener {
             val barcode = binding.editTextCodigoBarras.text.toString()
             if (barcode.isNotEmpty()) {
@@ -125,9 +126,12 @@ class AddProductActivity : AppCompatActivity() {
                             runOnUiThread {
                                 binding.editTextNombre.setText(product.product_name)
                                 if (!imagenUrlRecibida.isNullOrEmpty()) {
+                                    binding.imageViewProducto.visibility = View.GONE // al iniciar
                                     Glide.with(this@AddProductActivity)
                                         .load(imagenUrlRecibida)
                                         .into(binding.imageViewProducto)
+                                    binding.imageViewProducto.visibility = View.VISIBLE
+
                                 }
                                 Toast.makeText(this@AddProductActivity, "Producto encontrado", Toast.LENGTH_SHORT).show()
                             }
@@ -148,7 +152,7 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
 
-        // Botón Guardar
+        // Boton Guardar
         binding.buttonGuardar.setOnClickListener {
             val nombre = binding.editTextNombre.text.toString().trim()
             val fechaCaducidad = binding.editTextFechaCaducidad.text.toString().trim()
@@ -175,8 +179,9 @@ class AddProductActivity : AppCompatActivity() {
                         cantidad = cantidadRecibida,
                         usuarioId = 1
                     )
-
+                    // Insertamos el producto y actualizamos las estadísticas del mes
                     viewModel.insert(producto)
+                    viewModel.actualizarEstadisticaMensual()
                     finish()
                 }
             } else {
@@ -185,6 +190,7 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
+    // Devuelve la fecha actual formateada como yyyy-MM-dd
     private fun getTodayDateString(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return formatter.format(Date())

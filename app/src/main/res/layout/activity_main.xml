@@ -5,18 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutMain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#EEF5E6"
+    tools:context=".ui.main.MainActivity">
 
     <!-- Switch para alternar entre productos consumidos y no consumidos -->
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchMostrarConsumidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mostrar consumidos"
+        android:textColor="#2E7D32"
         android:layout_margin="16dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Botón para probar notificación -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonTestNotificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Probar notificación"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#4CAF50"
+        app:cornerRadius="40dp"
+        app:layout_constraintTop_toBottomOf="@id/switchMostrarConsumidos"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp" />
 
     <!-- Lista de productos -->
     <androidx.recyclerview.widget.RecyclerView
@@ -24,23 +41,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/switchMostrarConsumidos"
+        app:layout_constraintTop_toBottomOf="@id/buttonTestNotificacion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Botón flotante para añadir -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddProducto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Añadir producto"
-        android:src="@drawable/ic_add"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/white" />
-
+    <!-- Botón flotante para estadísticas -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabStats"
         android:layout_width="wrap_content"
@@ -50,17 +56,31 @@
         android:contentDescription="Estadísticas"
         android:src="@drawable/ic_stats"
         app:tint="@android:color/white"
+        app:backgroundTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/buttonTestNotificacion"
+    <!-- Botón flotante para añadir producto -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddProducto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Probar notificación"
-        app:layout_constraintTop_toBottomOf="@id/switchMostrarConsumidos"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp" />
+        android:layout_margin="16dp"
+        android:contentDescription="Añadir producto"
+        android:src="@drawable/ic_add"
+        app:tint="@android:color/white"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- visibility= gone || visible para ver el onboarding-->
+    <Button
+        android:id="@+id/buttonResetOnboarding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset Onboarding"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/fabAddProducto"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

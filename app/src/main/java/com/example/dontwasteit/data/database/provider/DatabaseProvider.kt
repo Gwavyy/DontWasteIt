@@ -11,18 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 object DatabaseProvider {
-
+    //Devuelve la instancia de la base de datos de Room
     fun provideDatabase(context: Context): ProductDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             ProductDatabase::class.java,
             "dontwasteit_db"
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration() //Si cambia el esquema y no se tiene migracion se destruye la base de datos
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-
+                    //Corrutina para insertar usuario por defecto
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = provideDatabase(context)
                         val usuarioDao = database.usuarioDao()
