@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         // Configura lista de productos
         configurarRecyclerView(mostrandoConsumidos)
 
+        viewModel.actualizarEstadisticaMensual()
+
         // Gestion del pop-up y del mes actual
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
         val mesGuardado = prefs.getString("ultimoMes", null)
