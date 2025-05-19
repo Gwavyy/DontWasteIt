@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.dontwasteit.databinding.ActivityOnboardingBinding
 import com.example.dontwasteit.ui.main.MainActivity
 import androidx.core.content.edit
+import com.example.dontwasteit.R
 
 //Pop up que se muestra solo la primera vez que se abre la aplicación.
 class OnboardingActivity : AppCompatActivity() {
@@ -23,17 +24,17 @@ class OnboardingActivity : AppCompatActivity() {
             OnboardingItem(
                 title = "Bienvenido a Don't Waste It",
                 description = "Una app para ayudarte a reducir el desperdicio de alimentos en casa.",
-
+                imageRes = R.drawable.dontawasteitlogo
             ),
             OnboardingItem(
                 title = "Organiza tus productos",
                 description = "Escanea, clasifica y guarda los alimentos para llevar un mejor control.",
-
+                imageRes = R.drawable.onboarding1
             ),
             OnboardingItem(
                 title = "Evita caducidades",
                 description = "Recibe notificaciones antes de que los productos caduquen.",
-
+                imageRes = R.drawable.onboarding2
             )
         )
         // Adaptador personalizado que muestra los items de onboarding en un ViewPager
@@ -62,5 +63,6 @@ class OnboardingActivity : AppCompatActivity() {
 //Data class que representa el contenido de una pantalla del onboarding.
 data class OnboardingItem(
     val title: String,
-    val description: String
+    val description: String,
+    val imageRes: Int
 )

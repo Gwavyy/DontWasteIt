@@ -74,7 +74,7 @@ class NotisCaducidad(
 
         //Contenido de la notificacion
         val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("¡Alerta de productos!")
             .setContentText("Tienes $cantidad producto(s) que caducan pronto")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

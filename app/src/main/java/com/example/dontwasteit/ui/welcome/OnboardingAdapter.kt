@@ -13,6 +13,7 @@ class OnboardingAdapter(private val items: List<OnboardingItem>) : RecyclerView.
         fun bind(item: OnboardingItem) {
             binding.textTitle.text = item.title
             binding.textDescription.text = item.description
+            binding.imageView.setImageResource(item.imageRes)
         }
     }
 

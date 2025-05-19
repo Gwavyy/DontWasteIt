@@ -93,7 +93,7 @@ class ProductAdapter(private val mostrarBotones: Boolean = true)
 
                     // Asignar color segun proximidad de caducidad
                     val colorDrawable = when {
-                        diasRestantes < 1 -> R.drawable.circle_red    // caducado
+                        diasRestantes <= 1 -> R.drawable.circle_red    // muy cerca de caducar || ya caducado
                         diasRestantes <= 3 -> R.drawable.circle_yellow // cerca de caducar
                         else -> R.drawable.circle_green                // en buen estado
                     }
