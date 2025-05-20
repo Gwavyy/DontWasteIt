@@ -102,5 +102,7 @@ dependencies {
 
     implementation ("com.google.android.material:material:1.9.0") // o superior
 
+    //BarChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }
