@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">DontWasteIt</string>
+    <string name="anadir_producto">Añadir producto</string>
+    <string name="nombre_del_producto">Nombre del producto</string>
+    <string name="fecha_de_caducidad">Fecha de caducidad</string>
+    <string name="codigo_de_barras">Código de barras</string>
+    <string name="escanear_codigo">Escanear código</string>
+    <string name="buscar_en_api">Buscar en API</string>
+    <string name="guardar_producto">Guardar producto</string>
+    <string name="lista_de_productos">Lista de productos</string>
+    <string name="consumido">Consumido</string>
+    <string name="probar_notificacion">Probar notificación</string>
+    <string name="estadisticas">Estadísticas</string>
+    <string name="anadir_producto_fab">Añadir producto</string>
+    <string name="reset_onboarding">Reset Onboarding</string>
+    <string name="empezar">Empezar</string>
+    <string name="caduca">Caduca: -</string>
+    <string name="marcar_como_consumido">Marcar como consumido</string>
+    <string name="eliminar_producto">Eliminar producto</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="consumido_item_product">Consumido</string>
 </resources>

@@ -20,7 +20,7 @@
         android:id="@+id/buttonEmpezar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Empezar"
+        android:text="@string/empezar"
         android:enabled="false"
         android:textColor="@android:color/white"
         android:backgroundTint="#4CAF50"

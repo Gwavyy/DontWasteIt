@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete"
-                    android:contentDescription="Eliminar"/>
+                    android:contentDescription="@string/eliminar"/>
 
                 <ImageButton
                     android:id="@+id/buttonConsumido"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_check"
-                    android:contentDescription="Consumido"/>
+                    android:contentDescription="@string/consumido_item_product"/>
             </LinearLayout>
         </LinearLayout>
 

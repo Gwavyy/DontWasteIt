@@ -16,7 +16,7 @@
             android:id="@+id/textTituloAddProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Añadir producto"
+            android:text="@string/anadir_producto"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#2E7D32"
@@ -28,7 +28,7 @@
             android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre del producto"
+            android:hint="@string/nombre_del_producto"
             android:inputType="text" />
 
         <!-- Fecha de caducidad -->
@@ -36,7 +36,7 @@
             android:id="@+id/editTextFechaCaducidad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Fecha de caducidad"
+            android:hint="@string/fecha_de_caducidad"
             android:focusable="false"
             android:inputType="none"
             android:layout_marginTop="8dp" />
@@ -54,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Código de barras"
+                android:hint="@string/codigo_de_barras"
                 android:inputType="number" />
 
             <ImageButton
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_camera"
-                android:contentDescription="Escanear código"
+                android:contentDescription="@string/escanear_codigo"
                 android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:id="@+id/buttonBuscarEnApi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buscar en API"
+            android:text="@string/buscar_en_api"
             style="@style/Widget.MaterialComponents.Button"
             app:cornerRadius="24dp"
             app:backgroundTint="?attr/colorPrimary"
@@ -101,7 +101,7 @@
             android:id="@+id/buttonGuardar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar producto"
+            android:text="@string/guardar_producto"
             style="@style/Widget.MaterialComponents.Button"
             app:cornerRadius="24dp"
             app:backgroundTint="?attr/colorPrimary"
