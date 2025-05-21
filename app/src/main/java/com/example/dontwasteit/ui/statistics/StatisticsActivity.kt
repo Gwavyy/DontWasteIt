@@ -41,16 +41,20 @@ class StatisticsActivity : AppCompatActivity() {
                     "Desperdicio: %.1f%%".format(estadistica.porcentajeDesechos)
 
                 // Compara el porcentaje con la media nacional y mostrar un mensaje
-                val mensaje = if (estadistica.porcentajeDesechos <= 4.4f) {
-                    "¡Enhorabuena! Estás por debajo de la media española de desperdicio (4.4%)"
+                if (estadistica.porcentajeDesechos <= 4.4f) {
+                    binding.textComparacion.text =
+                        "¡Enhorabuena! Estás por debajo de la media española de desperdicio (4.4%)"
+                    binding.textComparacion.setTextColor(ContextCompat.getColor(this@StatisticsActivity, android.R.color.holo_green_dark))
                 } else {
-                    "Estás por encima de la media española de desperdicio (4.4%)"
+                    binding.textComparacion.text =
+                        "Estás por encima de la media española de desperdicio (4.4%)"
+                    binding.textComparacion.setTextColor(ContextCompat.getColor(this@StatisticsActivity, android.R.color.holo_red_dark))
                 }
-                binding.textComparacion.text = mensaje
+
 
                 // Mostrar la categoría mas consumida en el mes o ninguna si no hay datos
                 binding.textCategoriaMasConsumida.text =
-                    "Categoría más consumida: ${estadistica.categoriaMasConsumida ?: "Ninguna"}"
+                    "Categoría más caducada: ${estadistica.categoriaMasConsumida ?: "Ninguna"}"
 
                 val entries = listOf(
                     BarEntry(0f, estadistica.productosConsumidos.toFloat()),

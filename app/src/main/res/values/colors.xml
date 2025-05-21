@@ -4,5 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="verde_primario">#4CAF50</color>
     <color name="verde_oscuro">#388E3C</color>
+    <color name="switch_track_green">#A5D6A7</color> <!-- más claro -->
+
 
 </resources>

@@ -93,8 +93,13 @@ class ProductViewModel(private val repository: ProductRepository, private val es
             val total = productosDelMes.size
             val porcentaje = if (total > 0) (caducados.toFloat() / total) * 100 else 0f
 
-            val categoriaMasConsumida = productosDelMes.filter { it.consumido && it.categoria != null }
-                .groupingBy { it.categoria }
+            val categoriaMasCaducada = productosDelMes.filter {
+                !it.consumido && try {
+                    LocalDate.parse(it.fechaCaducidad, formatter).isBefore(hoy) && it.categoria != null
+                } catch (_: Exception) {
+                    false
+                }
+            }.groupingBy { it.categoria }
                 .eachCount()
                 .maxByOrNull { it.value }
                 ?.key
@@ -104,7 +109,7 @@ class ProductViewModel(private val repository: ProductRepository, private val es
                 productosConsumidos = consumidos,
                 productosDesechados = caducados,
                 porcentajeDesechos = porcentaje,
-                categoriaMasConsumida = categoriaMasConsumida,
+                categoriaMasConsumida = categoriaMasCaducada,
                 productosNoConsumidos = noConsumidos
             )
 

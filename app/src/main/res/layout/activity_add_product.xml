@@ -11,6 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textTituloAddProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Añadir producto"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#2E7D32"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
         <!-- Nombre -->
         <EditText
             android:id="@+id/editTextNombre"
@@ -95,5 +107,6 @@
             app:backgroundTint="?attr/colorPrimary"
             android:textColor="@android:color/white"
             android:layout_marginTop="24dp" />
+
     </LinearLayout>
 </ScrollView>

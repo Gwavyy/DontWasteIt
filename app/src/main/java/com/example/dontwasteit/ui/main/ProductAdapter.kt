@@ -37,13 +37,26 @@ class ProductAdapter(private val mostrarBotones: Boolean = true)
         fun bind(producto: Product) {
             // Asignar textos
             binding.textNombre.text = producto.nombre
-            binding.textNutriscore.text = "Nutriscore: ${producto.nutriscore ?: "?"}"
+            binding.textNutriscore.text = "Nutriscore: ${producto.nutriscore ?: "unknown"}"
             binding.textCaducidad.text = "Caduca: ${producto.fechaCaducidad}"
 
-            // Cargar imagen del producto (si hay)
+            // Cargar imagen del producto
+            val placeholderRes = when (producto.categoria) {
+                "Lácteos" -> R.drawable.placeholder_lacteos
+                "Carnes" -> R.drawable.placeholder_carnes
+                "Frutas" -> R.drawable.placeholder_frutas
+                "Verduras" -> R.drawable.placeholder_verduras
+                "Bebidas" -> R.drawable.placeholder_bebidas
+                "Panadería" -> R.drawable.placeholder_panaderia
+                else -> R.drawable.placeholder_otros
+            }
+
             Glide.with(binding.root.context)
                 .load(producto.imagenUrl)
+                .placeholder(placeholderRes)
+                .error(placeholderRes)
                 .into(binding.imageViewProducto)
+
 
             // Al hacer clic en el producto abre el detalle
             binding.root.setOnClickListener {

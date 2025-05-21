@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.dontwasteit.R
 import com.example.dontwasteit.databinding.ActivityProductDetailBinding
 
 /**
@@ -37,11 +38,22 @@ class ProductDetailActivity : AppCompatActivity() {
         binding.textCategoria.text = "Categoría: ${categoria ?: "-"}"
         binding.textCaducidad.text = "Caduca: ${fechaCaducidad ?: "-"}"
 
-        //Se muestra la imagen si esta disponible
+        //Imagen
+        val placeholderRes = when (categoria) {
+            "Lácteos" -> R.drawable.placeholder_lacteos
+            "Carnes" -> R.drawable.placeholder_carnes
+            "Frutas" -> R.drawable.placeholder_frutas
+            "Verduras" -> R.drawable.placeholder_verduras
+            "Bebidas" -> R.drawable.placeholder_bebidas
+            "Panadería" -> R.drawable.placeholder_panaderia
+            else -> R.drawable.placeholder_otros
+        }
+
         Glide.with(this)
             .load(imagenUrl)
+            .placeholder(placeholderRes)
+            .error(placeholderRes)
             .into(binding.imageViewProducto)
-
 
     }
 }
