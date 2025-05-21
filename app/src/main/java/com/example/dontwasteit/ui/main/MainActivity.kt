@@ -92,14 +92,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Boton de prueba para lanzar notificacion manualmente
+
         binding.buttonTestNotificacion.setOnClickListener {
             val testWork = OneTimeWorkRequestBuilder<NotisCaducidad>().build()
             WorkManager.getInstance(this).enqueue(testWork)
         }
+        binding.buttonTestNotificacion.apply { visibility = View.GONE }
 
         // Boton para reiniciar onboarding manualmente
         binding.buttonResetOnboarding.apply {
-            visibility = View.VISIBLE // ocultarlo en versión final con GONE
+            visibility = View.GONE // ocultarlo en versión final con GONE
             setOnClickListener {
                 getSharedPreferences("onboarding", MODE_PRIVATE)
                     .edit{

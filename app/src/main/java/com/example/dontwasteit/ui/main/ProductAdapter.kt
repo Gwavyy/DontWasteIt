@@ -73,12 +73,30 @@ class ProductAdapter(private val mostrarBotones: Boolean = true)
 
             // Mostrar u ocultar botones dependiendo del contexto (consumidos o no)
             if (mostrarBotones) {
-                binding.buttonConsumido.visibility = View.VISIBLE
-                binding.buttonEliminar.visibility = View.VISIBLE
+                try {
+                    val fechaCad = LocalDate.parse(producto.fechaCaducidad, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    val diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(), fechaCad)
+
+                    if (diasRestantes < 0) {
+                        // Producto caducado: solo mostrar botón de eliminar
+                        binding.buttonConsumido.visibility = View.GONE
+                        binding.buttonEliminar.visibility = View.VISIBLE
+                    } else {
+                        // Producto aún válido: mostrar ambos botones
+                        binding.buttonConsumido.visibility = View.VISIBLE
+                        binding.buttonEliminar.visibility = View.VISIBLE
+                    }
+
+                } catch (e: Exception) {
+                    // En caso de error al parsear fecha, mostrar ambos botones como fallback
+                    binding.buttonConsumido.visibility = View.VISIBLE
+                    binding.buttonEliminar.visibility = View.VISIBLE
+                }
             } else {
                 binding.buttonConsumido.visibility = View.GONE
                 binding.buttonEliminar.visibility = View.GONE
             }
+
 
             // Indicador de caducidad con circulo de colores
             if (producto.consumido) {

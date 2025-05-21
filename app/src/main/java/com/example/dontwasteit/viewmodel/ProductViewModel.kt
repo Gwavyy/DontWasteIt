@@ -63,7 +63,7 @@ class ProductViewModel(private val repository: ProductRepository, private val es
     //cuantos han caducado, el porcentaje de desperdicio y cual es la categoría más consumida.
     fun actualizarEstadisticaMensual() {
         viewModelScope.launch {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Añade esto
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val hoy = LocalDate.now()
             val productos = repository.allProducts.first()
             val mes = hoy.toString().substring(0, 7)
@@ -109,10 +109,20 @@ class ProductViewModel(private val repository: ProductRepository, private val es
             )
 
             estadisticaRepository.insertar(estadistica)
+
+            productosDelMes.filter{
+                !it.consumido && try {
+                    val fecha = LocalDate.parse(it.fechaCaducidad, formatter)
+                    fecha.isBefore(hoy) && !it.contadoEnEstadistica
+                } catch (_: Exception) {
+                    false
+                }
+            }.forEach { productoCaducado ->
+                val actualizado = productoCaducado.copy(contadoEnEstadistica = true)
+                repository.insert(actualizado)
+            }
         }
     }
-
-
 
     companion object {
         val Factory = viewModelFactory {

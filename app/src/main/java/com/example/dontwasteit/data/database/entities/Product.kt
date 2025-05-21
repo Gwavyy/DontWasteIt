@@ -18,6 +18,7 @@ data class Product(
     val imagenUrl: String? = null,
     val cantidad: String? = null,
     val usuarioId: Int? = null,
+    val contadoEnEstadistica: Boolean = false,
     val categoriaId: Int? = null
 
 )
