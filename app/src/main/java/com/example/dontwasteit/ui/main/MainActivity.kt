@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
         // Boton para reiniciar onboarding manualmente
         binding.buttonResetOnboarding.apply {
-            visibility = View.GONE // ocultarlo en versión final con GONE
+            visibility = View.VISIBLE // ocultarlo en versión final con GONE
             setOnClickListener {
                 getSharedPreferences("onboarding", MODE_PRIVATE)
                     .edit{

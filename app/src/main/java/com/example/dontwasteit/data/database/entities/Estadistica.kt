@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "estadisticas")
 data class Estadistica(
-    @PrimaryKey val fecha: String, // Ej: "2025-05"
+    @PrimaryKey val fecha: String,
     val productosConsumidos: Int,
     val productosDesechados: Int,
     val porcentajeDesechos: Float,
